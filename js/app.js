@@ -18,7 +18,7 @@ const megaroster = {
             id: this.max + 1,
             name: f.studentName.value,
         }
-        
+
         this.students.push(student)
 
         const studentName = ev.target.studentName.value
@@ -30,6 +30,7 @@ const megaroster = {
     buildListItem(student){
         const li = document.createElement('li')
         li.textContent = student.name
+        li.setAttribute('data-id', student.id)
         return li
     },
 }
