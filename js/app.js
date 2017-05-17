@@ -25,12 +25,13 @@ const megaroster = {
         const listItem = this.buildListItem(student)
         this.studentList.appendChild(listItem)
         this.max ++
+        f.reset()
     },
 
     buildListItem(student){
         const li = document.createElement('li')
         li.textContent = student.name
-        li.setAttribute('data-id', student.id)
+        li.dataset.id = student.id
         return li
     },
 }
