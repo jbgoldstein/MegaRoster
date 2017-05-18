@@ -7,6 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/foundation.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
         <link rel="stylesheet" href="css/app.css">
     </head>
     <body>
@@ -14,17 +15,19 @@
             <div class="medium-offset-2 medium-8 columns">
                 <h2>Megaroster</h2>
                 <form id="new-student">
-                    <div class = "small-9 columns">
-                        <input type = "text" 
-                         name = "studentName" 
-                         placeholder="Enter Student Name"
-                         autofocus
-                         required
+                    <div class = "input-group">
+                        <input 
+                            class = "input-group-field"
+                            type = "text" 
+                            name = "studentName" 
+                            placeholder="Enter Student Name"
+                            autofocus
+                            required
                         >
                     </div>
-                    <div class = "small-3 columns">
+                    <div class = "input-group-button">
                         <button type="submit" 
-                        class="expanded button">Add student</button>
+                        class="success expanded button">Add student</button>
                     </div>
                 </form>
             </div>
@@ -32,18 +35,21 @@
 
         <div class="row">
             <div class="medium-offset-2 medium-8 columns">
-                <ul id="student-list">
+                <ul id="student-list" class = "no-bullet">
                     <li class="student template">
                         <span class="student-name"></span>
                         <span class="actions">
                             <button
-                             type = 'button' 
+                             type = "button" 
                              class="remove alert button"
                             >
-                            Remove
+                            <i class = "fa fa-trash-o"></i>
                             </button>
-                            <button type = 'button' class="promote button">
-                            Promote
+                            <button 
+                                type = "button" 
+                                class="promote warning button"
+                            >
+                            <i class = "fa fa-star-o"></i>
                             </button>
                         </span>
                     </li>

@@ -7,15 +7,26 @@ const megaroster = {
         this.studentList = document.querySelector('#student-list')
         this.max = 0
         this.setupEventListeners()
+        this.load()
     },
 
     setupEventListeners() {
         document
             .querySelector('#new-student')
-            .addEventListener('submit', this.addStudent.bind(this))
+            .addEventListener('submit', this.addStudentViaForm.bind(this))
     },
 
-    addStudent(ev) {
+    load() {
+        const rosterString = localStorage.getItem('roster')
+        const rosterArray = JSON.parse(rosterString)
+        if (rosterArray) {
+            rosterArray
+                .reverse()
+                .map(this.addStudent.bind(this))
+        }
+    },
+
+    addStudentViaForm(ev) {
         ev.preventDefault()
         const f = ev.target
         const student = {
@@ -23,14 +34,20 @@ const megaroster = {
             name: f.studentName.value,
         }
 
+        this.addStudent(student)
+        f.reset()
+    },
+
+    addStudent(student) {
         this.students.unshift(student)
 
-        const studentName = ev.target.studentName.value
         const listItem = this.buildListItem(student)
         this.prependChild(this.studentList, listItem)
 
-        this.max ++
-        f.reset()
+        if (student.id > this.max) {
+            max = student.id
+        }
+        this.save()
     },
 
     prependChild(parent, child) {
@@ -52,6 +69,10 @@ const megaroster = {
         return li
     },
 
+    save() {
+        localStorage.setItem('roster', JSON.stringify(this.students))
+    },
+
     removeStudent(ev) {
         const btn = ev.target
         const closest = btn.closest('.student')
@@ -61,12 +82,11 @@ const megaroster = {
         for (let i = 0; i < this.students.length; i ++) {
             if (id == this.students[i].id) {
                 this.students.splice(i,1)
-            }
-            else if (id < this.students[i].id) {
-                this.students[i].id --
+                break
             }
         }
 
+        this.save()
         closest.remove()
     },
 
