@@ -45,15 +45,39 @@ const megaroster = {
         this.removeClassName(li, 'template')
         li
             .querySelector('button.remove')
-            .addEventListener('click',this.removeStudent)
+            .addEventListener('click',this.removeStudent.bind(this))
+        li
+            .querySelector('button.promote')
+            .addEventListener('click',this.promoteStudent.bind(this))
         return li
     },
 
     removeStudent(ev) {
         const btn = ev.target
+        const closest = btn.closest('.student')
+        const id = closest.dataset.id
+
+        //Remove it from the students array
+        for (let i = 0; i < this.students.length; i ++) {
+            if (id == this.students[i].id) {
+                this.students.splice(i,1)
+            }
+            else if (id < this.students[i].id) {
+                this.students[i].id --
+            }
+        }
+
+        closest.remove()
     },
 
-    removeClassName(e1, className) {
+    promoteStudent(ev) {
+        const btn = ev.target
+        const closest = btn.closest('.student')
+
+        closest.className = 'student promoted'
+    },
+
+    removeClassName(el, className) {
         el.className = el.className.replace(className, '').trim()
     },
 }
