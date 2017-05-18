@@ -58,14 +58,20 @@ const megaroster = {
         const template = document.querySelector('.student.template')
         const li = template.cloneNode(true)
         li.querySelector('.student-name').textContent = student.name
+        li.setAttribute('title', student.name)
         li.dataset.id = student.id
+
+        if (student.promoted) {
+            li.classList.add('promoted')
+        }
+
         this.removeClassName(li, 'template')
         li
             .querySelector('button.remove')
             .addEventListener('click',this.removeStudent.bind(this))
         li
             .querySelector('button.promote')
-            .addEventListener('click',this.promoteStudent.bind(this))
+            .addEventListener('click',this.promoteStudent.bind(this, student))
         return li
     },
 
@@ -90,11 +96,18 @@ const megaroster = {
         closest.remove()
     },
 
-    promoteStudent(ev) {
+    promoteStudent(student, ev) {
         const btn = ev.target
         const closest = btn.closest('.student')
+        student.promoted = !students.promoted
+        
+        if (student.promoted) {
+            li.classList.add('promoted')
+        } else {
+            li.classList.remove('promoted')
+        }
 
-        closest.className = 'student promoted'
+        this.save()
     },
 
     removeClassName(el, className) {
