@@ -83,6 +83,9 @@ class megaroster {
         li
             .querySelector('button.move-up')
             .addEventListener('click', this.moveUp.bind(this, student))
+        li
+            .querySelector('button.move-down')
+            .addEventListener('click', this.moveDown.bind(this, student))
     }
 
     removeStudent(ev) {
@@ -103,15 +106,15 @@ class megaroster {
 
     promoteStudent(student, ev) {
         const btn = ev.target
-        const closest = btn.closest('.student')
-        student.promoted = !students.promoted
-        
+        const li = btn.closest('.student')
+        student.promoted = !student.promoted
+
         if (student.promoted) {
             li.classList.add('promoted')
         } else {
             li.classList.remove('promoted')
         }
-
+    
         this.save()
     }
 
@@ -129,6 +132,25 @@ class megaroster {
             const previousStudent = this.students[index - 1]
             this.students[index - 1] = student
             this.students[index] = previousStudent
+
+            this.save()
+        }
+    }
+
+    moveDown(student, ev) {
+        const btn = ev.target
+        const li = btn.closest('.student')
+
+        const index = this.students.findIndex((currentStudent, i) => {
+            return currentStudent.id === student.id
+        })
+
+        if (index < this.students.length - 1) {
+            this.studentList.insertBefore(li, li.nextElementSibling.nextElementSibling)
+
+            const nextStudent = this.students[index + 1]
+            this.students[index + 1] = student
+            this.students[index] = nextStudent
 
             this.save()
         }
