@@ -1,20 +1,24 @@
 $(document).foundation()
 
-const megaroster = {
-    students: [],
-
-    init() {
-        this.studentList = document.querySelector('#student-list')
+class megaroster {
+    constructor(listSelector) {
+        this.studentList = document.querySelector(listSelector)
+        this.students = []
         this.max = 0
         this.setupEventListeners()
         this.load()
-    },
+    }
 
     setupEventListeners() {
         document
             .querySelector('#new-student')
             .addEventListener('submit', this.addStudentViaForm.bind(this))
-    },
+    }
+
+
+    save() {
+        localStorage.setItem('roster', JSON.stringify(this.students))
+    }
 
     load() {
         const rosterString = localStorage.getItem('roster')
@@ -24,7 +28,7 @@ const megaroster = {
                 .reverse()
                 .map(this.addStudent.bind(this))
         }
-    },
+    }
 
     addStudentViaForm(ev) {
         ev.preventDefault()
@@ -36,7 +40,7 @@ const megaroster = {
 
         this.addStudent(student)
         f.reset()
-    },
+    }
 
     addStudent(student) {
         this.students.unshift(student)
@@ -45,56 +49,57 @@ const megaroster = {
         this.prependChild(this.studentList, listItem)
 
         if (student.id > this.max) {
-            max = student.id
+            this.max = student.id
         }
         this.save()
-    },
+    }
 
     prependChild(parent, child) {
         parent.insertBefore(child, parent.firstChild)
-    },
+    }
 
     buildListItem(student){
         const template = document.querySelector('.student.template')
         const li = template.cloneNode(true)
+        this.removeClassName(li, 'template')
         li.querySelector('.student-name').textContent = student.name
-        li.setAttribute('title', student.name)
         li.dataset.id = student.id
 
         if (student.promoted) {
             li.classList.add('promoted')
         }
 
-        this.removeClassName(li, 'template')
+        this.setupActions(li, student)
+        return li
+    }
+
+    setupActions(li, student) {
         li
             .querySelector('button.remove')
             .addEventListener('click',this.removeStudent.bind(this))
         li
             .querySelector('button.promote')
             .addEventListener('click',this.promoteStudent.bind(this, student))
-        return li
-    },
-
-    save() {
-        localStorage.setItem('roster', JSON.stringify(this.students))
-    },
+        li
+            .querySelector('button.move-up')
+            .addEventListener('click', this.moveUp.bind(this, student))
+    }
 
     removeStudent(ev) {
         const btn = ev.target
-        const closest = btn.closest('.student')
-        const id = closest.dataset.id
+        const li = btn.closest('.student')
 
-        //Remove it from the students array
-        for (let i = 0; i < this.students.length; i ++) {
-            if (id == this.students[i].id) {
-                this.students.splice(i,1)
+        for (let i=0; i < this.students.length; i++) {
+            let currentId = this.students[i].id.toString()
+            if (currentId === li.dataset.id) {
+                this.students.splice(i, 1)
                 break
             }
         }
 
+        li.remove()
         this.save()
-        closest.remove()
-    },
+    }
 
     promoteStudent(student, ev) {
         const btn = ev.target
@@ -108,11 +113,30 @@ const megaroster = {
         }
 
         this.save()
-    },
+    }
+
+    moveUp(student, ev) {
+        const btn = ev.target
+        const li = btn.closest('.student')
+
+        const index = this.students.findIndex((currentStudent, i) => {
+            return currentStudent.id === student.id
+        })
+
+        if (index > 0) {
+            this.studentList.insertBefore(li, li.previousElementSibling)
+
+            const previousStudent = this.students[index - 1]
+            this.students[index - 1] = student
+            this.students[index] = previousStudent
+
+            this.save()
+        }
+    }
 
     removeClassName(el, className) {
         el.className = el.className.replace(className, '').trim()
-    },
+    }
 }
 
-megaroster.init()
+const roster = new megaroster("#student-list")

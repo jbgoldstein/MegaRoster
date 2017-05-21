@@ -1,32 +1,38 @@
 .template {
-    visibility: hidden;
+  visibility: hidden;
 }
 
 .student {
-    border: 1px solid #C0C0C0;
-    padding: 0.75rem 1.25rem;
-    height: 4rem;
-}
-
-.actions {
-    float: right;
-    margin-bottom: 0;
+  border: 1px solid #ddd;
+  padding: 0.75rem 1.25rem;
+  height: 4rem;
 }
 
 .student + .student {
-    border-top: 0;
+  border-top: none;
 }
 
 .student-name {
-    float: left;
-    line-height: 38px;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: calc(100% - 110px);
+  float: left;
+  line-height: 38px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: calc(100% - 195px)
+}
+
+.actions {
+  float: right;
+  margin-bottom: 0;
 }
 
 .promoted {
-    border-color: #FFD700;
-    background-color: #FFD700;
+  background-color: #FFA807;
+  border-color: #FFC656;
+}
+
+.student:first-child button.move-up {
+  background-color: #ddd;
+  color: #eee;
+  cursor: not-allowed;
 }
