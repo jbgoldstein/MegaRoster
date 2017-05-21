@@ -63,6 +63,7 @@ class megaroster {
         const li = template.cloneNode(true)
         this.removeClassName(li, 'template')
         li.querySelector('.student-name').textContent = student.name
+        li.querySelector('.student-name').contentEditable = false
         li.dataset.id = student.id
 
         if (student.promoted) {
@@ -86,6 +87,9 @@ class megaroster {
         li
             .querySelector('button.move-down')
             .addEventListener('click', this.moveDown.bind(this, student))
+        li
+            .querySelector('button.edit')
+            .addEventListener('click',this.edit.bind(this, student))
     }
 
     removeStudent(ev) {
@@ -153,6 +157,25 @@ class megaroster {
             this.students[index] = nextStudent
 
             this.save()
+        }
+    }
+
+    edit(student, ev) {
+        const btn = ev.target
+        const li = btn.closest('.student')
+        const name = li.querySelector('.student-name')
+
+        if (name.isContentEditable) {
+            const index = this.students.findIndex((currentStudent, i) => {
+                return currentStudent.id === student.id
+            })
+            this.students[index].name = name.textContent
+            name.contentEditable = false
+            name.style.backgroundColor = "white"
+            this.save()
+        } else {
+            name.contentEditable = true
+            name.style.backgroundColor = "#329932"
         }
     }
 

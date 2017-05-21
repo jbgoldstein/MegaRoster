@@ -5,7 +5,7 @@
 .student {
   border: 1px solid #ddd;
   padding: 0.75rem 1.25rem;
-  height: 4rem;
+  height: 6rem;
 }
 
 .student + .student {
