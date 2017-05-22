@@ -171,7 +171,7 @@ class megaroster {
             })
             this.students[index].name = name.textContent
             name.contentEditable = false
-            name.style.backgroundColor = "white"
+            name.style.backgroundColor = li.style.backgroundColor
             this.save()
         } else {
             name.contentEditable = true
