@@ -89,7 +89,7 @@ class megaroster {
             .addEventListener('click', this.moveDown.bind(this, student))
         li
             .querySelector('button.edit')
-            .addEventListener('click',this.edit.bind(this, student))
+            .addEventListener('click', this.edit.bind(this, student))
     }
 
     removeStudent(ev) {
@@ -164,18 +164,19 @@ class megaroster {
         const btn = ev.target
         const li = btn.closest('.student')
         const name = li.querySelector('.student-name')
+        const icon = btn.querySelector('i.fa')
 
         if (name.isContentEditable) {
-            const index = this.students.findIndex((currentStudent, i) => {
-                return currentStudent.id === student.id
-            })
-            this.students[index].name = name.textContent
+            student.name = name.textContent
             name.contentEditable = false
-            name.style.backgroundColor = li.style.backgroundColor
+            icon.classList.remove('fa-check')
+            icon.classList.add('fa-pencil')
             this.save()
         } else {
             name.contentEditable = true
-            name.style.backgroundColor = "#329932"
+            icon.classList.remove('fa-pencil')
+            icon.classList.add('fa-check')
+            name.focus()
         }
     }
 
